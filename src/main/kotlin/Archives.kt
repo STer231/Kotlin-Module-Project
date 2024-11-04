@@ -3,27 +3,47 @@ class Archives {
 
 
     fun showArchiveList() {
-       archiveList.forEachIndexed {index, archive ->
-           println("${index + 1} - ${archive.name}")}
+        if (archiveList.isEmpty()) {
+            println("Список архивов пуст")
+        } else {
+            println("Список архивов:")
+            println("0 - Вернуться назад")
+            archiveList.forEachIndexed { index, archive ->
+                println("${index + 1} - ${archive.name}")
+            }
 
-        while (true) {
-            println("Выберите номер архива")
-            val number = readlnOrNull()?.toIntOrNull()
-            if ((number != null && number <= archiveList.size   && number > 0)) {
-                openArchiveMenu(archiveList[number - 1])
-                return
-            } else if (number == null) {
-                println("Ошибка. Введите число")
-            } else {
-                println("Архива под таким номером не существует")
+            while (true) {
+                println("Выберите номер архива")
+                val number = readlnOrNull()?.toIntOrNull()
+                if ((number != null && number <= archiveList.size && number > 0)) {
+                    openArchiveMenu(archiveList[number - 1])
+                    return
+                } else if (number == null) {
+                    println("Ошибка. Введите число")
+                } else if (number == 0) {
+                    return
+                } else {
+                    println("Архива под таким номером не существует")
+                }
             }
         }
 
     }
 
     fun createArchive() {
-        val name: String = readLine()!!
-        archiveList.add(Archive(name))
+        while (true) {
+        val name: String? = readlnOrNull()
+        if (name != null) {
+            if (name.isEmpty()) {
+                println("Поле не может быть пустым\n" +
+                        "Задайте имя для архива")
+            } else {
+                archiveList.add(Archive(name))
+                println("Архив $name успешно создан")
+                return
+            }
+            }
+        }
     }
 }
 

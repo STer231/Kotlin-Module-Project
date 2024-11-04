@@ -3,12 +3,12 @@ class Start: MenuInt {
 
 
     fun startProgramm() {
-
+        println("Добро пожаловать!")
        while (true) {
            println(startMenu)
            val input = readlnOrNull()?.toIntOrNull()
-          val result =  when(input) {
-               0 ->  { println("Создаем архив...")
+           when(input) {
+               0 ->  { println("Задайте имя для архива")
                    archives.createArchive()
                }
                1 -> { println("Переходим в ваши архивы...")
@@ -17,9 +17,8 @@ class Start: MenuInt {
                2 -> { println("До свидания!")
                    break
                }
-               else -> "Некорректная комманда"
+               else -> println("Некорректная комманда")
            }
-           println(result)
        }
     }
 }

@@ -1,47 +1,23 @@
-class Archive(val name: String) {
-
+class Archive(val name: String) : NavigationMenu() {
     private val noteList: MutableList<Note> = mutableListOf()
-
-
 
     fun createNote() {
         println("Название заметки:")
-        val nameNote = readLine()?: "null"
+        val nameNote = IsEmptyInputCheck.checkEmptyInput("Название заметки не может быть пустым")
         println("Содержимое заметки")
-        val content = readLine()?: "null"
-
+        val content = IsEmptyInputCheck.checkEmptyInput("Содержимое заметки не может быть пустым")
         noteList.add(Note(nameNote, content))
+        println("Заметка $nameNote успешно создана")
     }
 
     fun showNoteList() {
         if (noteList.isEmpty()) {
             println("Архив $name пуст")
         } else {
-            println("Список ваших заметок:")
-            println("0 - Вернуться назад")
-            noteList.forEachIndexed { index, note ->
-                println("${index + 1} - ${note.nameNote}")
-            }
-
-            while (true) {
-                println("Введите номер заметки для прочтения содержимого")
-                val number = readlnOrNull()?.toIntOrNull()
-                if ((number != null && number <= noteList.size && number > 0)) {
-
-                    println(
-                        "Заметка - ${noteList[number - 1].nameNote}\n:" +
-                                "${noteList[number - 1].content}"
-                    )
-                    return
-                } else if (number == null) {
-                    println("Ошибка. Введите число")
-                } else if (number == 0) {
-                    return
-                } else {
-                    println("Заметки под таким номером не существует")
-                }
+            val menuItems = noteList.map { it.nameNote }
+            showMenu(Operations.NOTE_MENU, menuItems, "Вернуться к архивам") { index ->
+                noteList[index].readNote()
             }
         }
     }
-
 }
